@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 @st.cache
 def load_data(file_path):
     data = pd.read_csv(file_path)
-    return data2
+    return data
 
 # Function to get classifier model
 @st.cache(allow_output_mutation=True)
