@@ -76,19 +76,33 @@ def main():
             st.write(f"Testing data file {TEST_DATA_FILE} not found.")
 
     elif page == "Descriptive Statistics":
-        st.header("Descriptive Statistics")
+    st.header("Descriptive Statistics")
 
-        if not st.session_state.train_data.empty:
-            selected_columns_train = st.multiselect("Select Columns for Training Data (Descriptive Statistics)", st.session_state.train_data.columns)
-            if selected_columns_train:
-                st.write("Descriptive Statistics of Training Data")
-                st.write(st.session_state.train_data[selected_columns_train].describe())
+    if not st.session_state.train_data.empty:
+        # Descriptive Statistics with Boxplots
+        st.subheader("Boxplot Analysis for Numeric Variables")
+        numeric_columns = ["TX Amount", "TX Time Second", "TX Time Days"]
+        
+        for column in numeric_columns:
+            if column in st.session_state.train_data.columns:
+                fig, ax = plt.subplots()
+                sns.boxplot(data=st.session_state.train_data, y=column, ax=ax)
+                ax.set_title(f"Boxplot of {column}")
+                st.pyplot(fig)
+        
+        # Pie Chart for Fraud vs Non-Fraud Transactions
+        st.subheader("Transaction Type Distribution (Fraud vs Non-Fraud)")
+        if "Fraud" in st.session_state.train_data.columns:
+            fraud_counts = st.session_state.train_data["Fraud"].value_counts()
+            labels = ["Non-Fraud", "Fraud"] if 0 in fraud_counts.index else ["Fraud", "Non-Fraud"]
+            fig = go.Figure(
+                data=[go.Pie(labels=labels, values=fraud_counts.values, hole=0.4)]
+            )
+            fig.update_layout(title="Proportion of Fraud and Non-Fraud Transactions")
+            st.plotly_chart(fig)
 
-        if not st.session_state.test_data.empty:
-            selected_columns_test = st.multiselect("Select Columns for Testing Data (Descriptive Statistics)", st.session_state.test_data.columns)
-            if selected_columns_test:
-                st.write("Descriptive Statistics of Testing Data")
-                st.write(st.session_state.test_data[selected_columns_test].describe())
+    if not st.session_state.test_data.empty:
+        st.write("Testing Data available but descriptive analysis is focused on Training Data.")
 
     elif page == "Classification and Comparison":
         st.header("Classification and Comparison")
