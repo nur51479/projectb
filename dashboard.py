@@ -93,7 +93,7 @@ def main():
             # Pie Chart for Fraud vs Non-Fraud Transactions
             st.subheader("Transaction Type Distribution (Fraud vs Non-Fraud)")
             if "Fraud" in st.session_state.train_data.columns:
-                fraud_counts = st.session_state.train_data["Fraud"].value_counts()
+                fraud_counts = st.session_state.train_data["TX_FRAUD"].value_counts()
                 labels = ["Non-Fraud", "Fraud"] if 0 in fraud_counts.index else ["Fraud", "Non-Fraud"]
                 fig = go.Figure(
                     data=[go.Pie(labels=labels, values=fraud_counts.values, hole=0.4)]
