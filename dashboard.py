@@ -81,7 +81,7 @@ def main():
         if not st.session_state.train_data.empty:
             # Descriptive Statistics with Boxplots
             st.subheader("Boxplot Analysis for Numeric Variables")
-            numeric_columns = ["TX Amount", "TX Time Second", "TX Time Days"]
+            numeric_columns = ["TX_AMOUNT", "TX_TIME_SECONDS", "TX_TIME_DAYS"]
         
             for column in numeric_columns:
                 if column in st.session_state.train_data.columns:
